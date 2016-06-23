@@ -108,18 +108,11 @@ export default Ember.Component.extend({
             self.thisUser.set('coffeeShops', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }
-<<<<<<< HEAD
-        });
-        self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
-        self.set('plaidCompleted', false);
-      });
-=======
         })
         console.log(sortedShops);
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
       });
     self.set('plaidCompleted', false);
->>>>>>> 99b7c063b9cd51ae189224fffbb1f215d71a0835
     }
   }
 });
