@@ -232,6 +232,8 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
   exports["default"] = _ember["default"].Component.extend({
     plaidCompleted: true,
     coffeeShops: null,
+    coffeeChains: null,
+    thisUser: null,
     actions: {
       callApi: function callApi(users) {
         var self = this;
@@ -239,8 +241,6 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
           type: "POST",
           url: "http://localhost:8080/api/v1/test"
         }).then(function (data) {
-          console.log(users);
-          console.log("First response from Ajax:" + data);
 
           var noUser = true;
           var coffeeShops = []; // local variable
@@ -248,7 +248,6 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
           users.forEach(function (user) {
 
             if (user.get('accounts').includes(data[0].account)) {
-              console.log("This would be the put route user: " + user.get('accounts'));
               noUser = false;
               data.forEach(function (transaction) {
                 if (transaction._id === user.get('lastCoffeeId')) {
@@ -260,8 +259,8 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
                     }
                   });
                   user.set('coffeeShops', coffeeShops);
+                  self.set('thisUser', user);
                   self.sendAction('updateUser', user, user.id);
-                  console.log(user);
                 }
               });
             }
@@ -271,7 +270,6 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
           //new user code
           if (noUser) {
             var newUser = { accounts: [], coffeeShops: [], lastCoffeeId: "" };
-            console.log("New user: " + newUser);
             var newUserCoffee = [];
             data.forEach(function (transaction) {
               // this if block populates the user account model property
@@ -287,32 +285,50 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
             });
             //This if block popoulates the lastCoffeeId model property
             newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length - 4]._id;
-            console.log(newUserCoffee);
             var newUserShops = newUserCoffee.splice(-3, 3);
-            console.log("Right before we send it up: " + newUser);
             newUser.coffeeShops = newUserCoffee;
-            console.log(newUserShops);
             self.set('coffeeShops', newUserShops);
+            self.set('thisUser', user);
             self.sendAction('newUser', newUser);
           }
 
-          console.log("Coffee Shops: " + self.coffeeShops);
+          var sortedShops = {};
+
+          self.coffeeShops.forEach(function (shop) {
+            if (!Object.keys(sortedShops).includes(shop.name)) {
+              sortedShops[shop.name] = [shop._id];
+            } else {
+              sortedShops[shop.name].push(shop._id);
+            }
+          });
+          console.log(sortedShops);
+          Object.keys(sortedShops).forEach(function (key) {
+            if (sortedShops[key].length >= 5) {
+              sortedShops[key].splice(0, 5);
+              self.thisUser.set("coffeeShops", []);
+              self.thisUser.set('lastCoffeeId', sortedShops[key]);
+              self.thisUser.set('coffeeShops', sortedShops);
+              self.sendAction('coffeeChains', sortedShops);
+              self.sendAction('sortedUser', self.thisUser);
+            }
+          });
         });
       }
-      // processPlaidToken(token) {
-      //   var self = this;
-      //   $.ajax({
-      //     type: "POST",
-      //     url: "http://localhost:8080/api/v1/authenticate",
-      //     data: {
-      //       public_token: token,
-      //     }}).then(function(data) {
-      //     console.log(data);
-      //     self.set('plaidCompleted', false);
-      //   });
-      // }
     }
   });
+
+  // processPlaidToken(token) {
+  //   var self = this;
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "http://localhost:8080/api/v1/authenticate",
+  //     data: {
+  //       public_token: token,
+  //     }}).then(function(data) {
+  //     console.log(data);
+  //     self.set('plaidCompleted', false);
+  //   });
+  // }
 });
 define('client/components/plaid-link', ['exports', 'ember-plaid/components/plaid-link', 'client/config/environment'], function (exports, _emberPlaidComponentsPlaidLink, _clientConfigEnvironment) {
 
@@ -596,6 +612,17 @@ define('client/routes/index', ['exports', 'ember'], function (exports, _ember) {
       updateUser: function updateUser(user, id) {
         //  debugger;
         user.save();
+      },
+      sortedUser: function sortedUser(user) {
+        user.save();
+      },
+      displayChains: function displayChains(shops) {
+        Object.keys(shops).forEach(function (shop) {
+          $("#sortedShops").append('<li>' + shop + '</li>');
+          shops[shop].forEach(function (transaction) {
+            $('#sortedShops').append('<li>' + shops[shop] + '</li>');
+          });
+        });
       }
     }
   });
@@ -4790,26 +4817,17 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           dom.appendChild(el1, el2);
           var el2 = dom.createComment(" {{#plaid-link action='processPlaidToken'}}Verify Bank Account{{/plaid-link}} ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n    ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("button");
-          var el3 = dom.createTextNode("Call");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n\n  ");
+          var el2 = dom.createTextNode("\n\n\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1, 3]);
-          var morphs = new Array(1);
-          morphs[0] = dom.createElementMorph(element0);
-          return morphs;
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
         },
-        statements: [["element", "action", ["callApi", ["get", "users", ["loc", [null, [4, 31], [4, 36]]]]], [], ["loc", [null, [4, 12], [4, 38]]]]],
+        statements: [],
         locals: [],
         templates: []
       };
@@ -4854,7 +4872,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
       meta: {
         "fragmentReason": {
           "name": "missing-wrapper",
-          "problems": ["wrong-type"]
+          "problems": ["wrong-type", "multiple-nodes"]
         },
         "revision": "Ember@2.6.0",
         "loc": {
@@ -4864,7 +4882,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 12,
             "column": 0
           }
         },
@@ -4878,16 +4896,23 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
+        var el1 = dom.createElement("button");
+        var el2 = dom.createTextNode("Call");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
+        var element0 = dom.childAt(fragment, [1]);
+        var morphs = new Array(2);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createElementMorph(element0);
         dom.insertBoundary(fragment, 0);
-        dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]]],
+      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]], ["element", "action", ["callApi", ["get", "users", ["loc", [null, [11, 27], [11, 32]]]]], [], ["loc", [null, [11, 8], [11, 34]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -5038,7 +5063,7 @@ define("client/templates/index", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 10,
             "column": 0
           }
         },
@@ -5061,6 +5086,13 @@ define("client/templates/index", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "sortedShops");
+        var el3 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
@@ -5073,7 +5105,7 @@ define("client/templates/index", ["exports"], function (exports) {
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 3, 3);
         return morphs;
       },
-      statements: [["inline", "plaid-call", [], ["users", ["subexpr", "@mut", [["get", "model", ["loc", [null, [4, 21], [4, 26]]]]], [], []], "newUser", "saveUser", "updateUser", "updateUser"], ["loc", [null, [4, 2], [4, 71]]]]],
+      statements: [["inline", "plaid-call", [], ["users", ["subexpr", "@mut", [["get", "model", ["loc", [null, [4, 21], [4, 26]]]]], [], []], "newUser", "saveUser", "updateUser", "updateUser", "sortedUser", "sortedUser", "coffeeChains", "displayChains"], ["loc", [null, [4, 2], [4, 124]]]]],
       locals: [],
       templates: []
     };
@@ -5111,7 +5143,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("client/app")["default"].create({"name":"client","version":"0.0.0+55ced3e4"});
+  require("client/app")["default"].create({"name":"client","version":"0.0.0+37d6402b"});
 }
 
 /* jshint ignore:end */

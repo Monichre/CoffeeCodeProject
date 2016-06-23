@@ -3,6 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   plaidCompleted: true,
   coffeeShops: null,
+  coffeeChains: null,
+  thisUser: null,
   actions: {
     callApi(users) {
       var self = this;
@@ -10,8 +12,6 @@ export default Ember.Component.extend({
         type: "POST",
         url: "http://localhost:8080/api/v1/test"
       }).then(function(data) {
-        console.log(users);
-        console.log("First response from Ajax:" + data);
 
         var noUser = true;
         var coffeeShops = []; // local variable
@@ -19,7 +19,6 @@ export default Ember.Component.extend({
         users.forEach(function(user){
 
           if(user.get('accounts').includes(data[0].account)){
-            console.log("This would be the put route user: " + user.get('accounts'));
             noUser = false;
             data.forEach(function(transaction) {
               if(transaction._id === user.get('lastCoffeeId')){
@@ -31,8 +30,8 @@ export default Ember.Component.extend({
                   }
                 });
                 user.set('coffeeShops', coffeeShops);
+                self.set('thisUser', user);
                 self.sendAction('updateUser', user, user.id);
-                console.log(user);
               }
             });
           }
@@ -42,7 +41,6 @@ export default Ember.Component.extend({
         //new user code
         if(noUser){
           var newUser = {accounts:[], coffeeShops:[], lastCoffeeId: ""};
-          console.log("New user: " + newUser);
           var newUserCoffee = [];
           data.forEach(function(transaction){
             // this if block populates the user account model property
@@ -58,29 +56,67 @@ export default Ember.Component.extend({
           });
           //This if block popoulates the lastCoffeeId model property
           newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length - 4]._id;
-          console.log(newUserCoffee);
           var newUserShops = newUserCoffee.splice(-3, 3);
-          console.log("Right before we send it up: " + newUser);
           newUser.coffeeShops = newUserCoffee;
-          console.log(newUserShops);
           self.set('coffeeShops', newUserShops);
+          // self.set('thisUser', user);
           self.sendAction('newUser', newUser);
         }
 
-        console.log("Coffee Shops: " + self.coffeeShops);
+
+        var sortedShops = {};
+
+              // $("#target").text("<li>" sortedShops[0] "</li>");
+              // $("#target").text("<li>" sortedShops[shop.name] "</li>")
+
+
+
+        self.coffeeShops.forEach(function(shop){
+          if(!(Object.keys(sortedShops).includes(shop.name))){
+            sortedShops[shop.name] = [shop._id];
+          } else {
+            sortedShops[shop.name].push(shop._id)
+          }
+
+        });
+
+          ////DROPDOWN MENU CRAP
+          var shops = Object.keys(sortedShops);
+          console.log(shops);
+
+          console.log(sortedShops);
+
+          shops.forEach(function(shop){
+            console.log(shop);
+            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
+          });
+          /////////////
+
+        // console.log(sortedShops);
+        Object.keys(sortedShops).forEach(function(key){
+          if(sortedShops[key].length >= 5){
+            sortedShops[key].splice(0, 5);
+            self.thisUser.set("coffeeShops", []);
+            self.thisUser.set('lastCoffeeId', sortedShops[key]);
+            self.thisUser.set('coffeeShops', sortedShops);
+            self.sendAction('coffeeChains', sortedShops);
+            self.sendAction('sortedUser', self.thisUser);
+          }
+        })
       });
     }
-    // processPlaidToken(token) {
-    //   var self = this;
-    //   $.ajax({
-    //     type: "POST",
-    //     url: "http://localhost:8080/api/v1/authenticate",
-    //     data: {
-    //       public_token: token,
-    //     }}).then(function(data) {
-    //     console.log(data);
-    //     self.set('plaidCompleted', false);
-    //   });
-    // }
   }
 });
+
+// processPlaidToken(token) {
+//   var self = this;
+//   $.ajax({
+//     type: "POST",
+//     url: "http://localhost:8080/api/v1/authenticate",
+//     data: {
+//       public_token: token,
+//     }}).then(function(data) {
+//     console.log(data);
+//     self.set('plaidCompleted', false);
+//   });
+// }

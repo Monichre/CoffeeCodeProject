@@ -66,7 +66,7 @@ router.route('/users/:users_id')
       //save the udpate
       console.log(user);
       user.save(function(error){
-        if(error) response.send(error);
+        // if(error) response.send(error);
         response.json({message:'updated!'});
       });
     });
