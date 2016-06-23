@@ -1,0 +1,1 @@
+/Users/ianlesikar/Projects/CoffeeCodeProject/client/node_modules/ember-cli/lib/broccoli/testem.js

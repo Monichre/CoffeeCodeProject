@@ -1,0 +1,1 @@
+/Users/ianlesikar/Projects/CoffeeCodeProject/client/tmp/funnel-input_base_path-4Zmst7Jr.tmp/0/bower_components/ember-cli-test-loader/test-loader.js
