@@ -6,19 +6,25 @@ export default Ember.Component.extend({
   coffeeChains: null,
   thisUser: null,
   freeCoffee: false,
+  users: function(){
+    return this.store.findAll('user')
+  },
   actions: {
-    callApi(users) {
+    processPlaidToken(token) {
       var self = this;
       Ember.$.ajax({
         type: "POST",
-        url: "http://localhost:8080/api/v1/test"
-      }).then(function(data) {
-
+        url: "http://localhost:8080/api/v1/authenticate",
+        data: {
+          public_token: token,
+        }}).then(function(data) {
+          console.log(data);
+        var users = self.users;
         var noUser = true;
         var coffeeShops = []; // local variable
 
         users.forEach(function(user){
-
+          console.log(user.id);
           if(user.get('accounts').includes(data[0].account)){
             noUser = false;
             data.forEach(function(transaction) {
@@ -45,20 +51,22 @@ export default Ember.Component.extend({
           var newUserCoffee = [];
           data.forEach(function(transaction){
             // this if block populates the user account model property
-            if(!(newUser.accounts.includes(transaction.account))){
-              newUser.accounts.push(transaction.account);
+            if(newUser.accounts.indexOf(transaction._account) < 0){
+              newUser.accounts.push(transaction._account);
             }
             // this if block populates the user coffeeShops model property
-            if(transaction.category.includes("Coffee Shop")){
-              if(!(newUserCoffee.includes(transaction))){
-                newUserCoffee.push(transaction);
+            if(transaction.category){
+              if(transaction.category.includes("Coffee Shop")){
+                if(!(newUserCoffee.includes(transaction))){
+                  newUserCoffee.push(transaction);
+                }
               }
             }
           });
           //This if block popoulates the lastCoffeeId model property
           newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length - 4]._id;
           var newUserShops = newUserCoffee.splice(-3, 3);
-          newUser.coffeeShops = newUserCoffee;
+          newUser.coffeeShops = newUserShops;
           self.set('coffeeShops', newUserShops);
           // self.set('thisUser', user);
           self.sendAction('newUser', newUser);
@@ -100,10 +108,18 @@ export default Ember.Component.extend({
             self.thisUser.set('coffeeShops', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }
+<<<<<<< HEAD
         });
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
         self.set('plaidCompleted', false);
       });
+=======
+        })
+        console.log(sortedShops);
+        self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
+      });
+    self.set('plaidCompleted', false);
+>>>>>>> 99b7c063b9cd51ae189224fffbb1f215d71a0835
     }
   }
 });
@@ -120,3 +136,10 @@ export default Ember.Component.extend({
 //     self.set('plaidCompleted', false);
 //   });
 // }
+
+// callApi(users) {
+//   var self = this;
+//   Ember.$.ajax({
+//     type: "POST",
+//     url: "http://localhost:8080/api/v1/test"
+//   }).then(function(data) {
