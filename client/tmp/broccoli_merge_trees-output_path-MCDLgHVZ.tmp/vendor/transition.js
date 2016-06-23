@@ -1,1 +1,0 @@
-/Users/ianlesikar/Projects/CoffeeCodeProject/client/node_modules/ember-bootstrap/vendor/transition.js

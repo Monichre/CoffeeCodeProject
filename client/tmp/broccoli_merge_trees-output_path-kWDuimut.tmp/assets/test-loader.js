@@ -1,1 +1,0 @@
-/Users/ianlesikar/Projects/CoffeeCodeProject/client/bower_components/ember-cli-test-loader/test-loader.js

@@ -1,1 +1,0 @@
-/Users/ianlesikar/Projects/CoffeeCodeProject/client/tmp/funnel-input_base_path-q6p5MkeF.tmp/0/adapters/application.js
