@@ -1,5 +1,23 @@
+@font-face {
+    font-family: simple;
+    src: url(../simple.ttf);
+}
+@font-face {
+    font-family: aliens;
+    src: url(../aliens.ttf);
+}
+@font-face {
+    font-family: biko;
+    src: url(../biko.otf);
+}
+
+
 body {
   font-family: simple;
+}
+.navbar.navbar-default {
+  position: relative;;
+  z-index: 1000;
 }
 main {
   background: url(../images/coffee.jpg) no-repeat center center fixed;
@@ -7,12 +25,13 @@ main {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  position: absolute;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
 
 }
-@font-face {
-    font-family: simple;
-    src: url(../simple.ttf);
-}
+
 main {
   display: block;
   margin: auto;
@@ -52,11 +71,44 @@ aside h1 {
 
 #about {
   margin: auto;
-  min-height: 100%;
+  position: absolute;
+  top: 0;
+  height: 100%;
   min-width: 100%;
   background: url(../images/b&w.jpeg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+#info {
+  position: relative;
+  margin: auto;
+  margin-top:15%;
+  display: block;
+  height: 200px;
+  width: 800px;
+  background-color: rgba(192,192,192,.8);
+  padding: 2%;
+}
+#info h2 {
+  text-align: center;
+  font-family: biko;
+}
+
+#info p {
+  font-family: Helvetica Neue;
+  font-weight: lighter;
+  color: black;
+  
+  font-size: 20px;
+}
+.click {
+  margin: auto;
+  display: block;
+  text-align: center;
+}
+.click img {
+  height: 60px;
+  width: 60px;
 }
