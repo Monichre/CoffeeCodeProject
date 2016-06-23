@@ -36,9 +36,7 @@ export default Ember.Route.extend({
        shops[shop].forEach(function(transaction){
          Ember.$('#sortedShops').append('<li>'+ transaction + '</li>');
        })
-
      })
-
-   }
+   },
   }
 });

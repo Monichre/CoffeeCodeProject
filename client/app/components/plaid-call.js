@@ -78,7 +78,7 @@ export default Ember.Component.extend({
           if(!(Object.keys(sortedShops).includes(shop.name))){
             sortedShops[shop.name] = [shop._id];
           } else {
-            sortedShops[shop.name].push(shop._id)
+            sortedShops[shop.name].push(shop._id);
           }
 
         });
@@ -89,8 +89,6 @@ export default Ember.Component.extend({
             $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
           });
           /////////////
-
-
 
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
