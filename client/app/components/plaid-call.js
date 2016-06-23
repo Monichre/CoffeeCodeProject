@@ -72,7 +72,11 @@ export default Ember.Component.extend({
           self.sendAction('newUser', newUser);
         }
 
+
         var sortedShops = {};
+
+              // $("#target").text("<li>" sortedShops[0] "</li>");
+              // $("#target").text("<li>" sortedShops[shop.name] "</li>")
 
         self.coffeeShops.forEach(function(shop){
           if(!(Object.keys(sortedShops).includes(shop.name))){
@@ -80,6 +84,21 @@ export default Ember.Component.extend({
           } else {
             sortedShops[shop.name].push(shop._id)
           }
+
+        });
+
+          ////DROPDOWN MENU CRAP
+          var shops = Object.keys(sortedShops);
+          console.log(shops);
+
+          console.log(sortedShops);
+
+          shops.forEach(function(shop){
+            console.log(shop);
+            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
+          });
+          /////////////
+
         });
 
         Object.keys(sortedShops).forEach(function(key){

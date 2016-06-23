@@ -33,56 +33,13 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+
 router.get('/', function(request, response) {
     response.json({ message: 'hooray! welcome to our api!' });
 });
 
 // more routes for our API will happen here
 
-//test routes ending with coffeeshops
-
-
-  //routes by id -- coffeeshops/:coffee_id
-router.route('/users/:users_id')
-//
-//   .get(function(request, response){
-//     Coffee.findById(request.params.coffee_id, function(error, coffee){
-//       if(error) response.send(error);
-//       response.json(coffee);
-//     });
-//   })
-//   // update the coffee shop with this Id
-  .put(function(request, response){
-    console.log(response);
-    User.findById(request.params.users_id, function(error, user){
-      console.log(user);
-      if(error) response.send(error);
-      //update
-
-      user.accounts = request.body.accounts;
-      user.coffeeShops = request.body.coffee_shops;
-      user.lastCoffeeId = request.body.last_coffee_id;
-
-      //save the udpate
-      console.log(user);
-      user.save(function(error){
-        // if(error) response.send(error);
-        response.json({message:'updated!'});
-      });
-    });
-  })
-//
-//   .delete(function (request, response){
-//     Coffee.remove({
-//       _id:request.params.coffee_id
-//     }, function(error, coffee){
-//       if(error) res.send(error);
-//
-//       response.json({message: 'Successfully Deleted'});
-//     });
-//   });
-// *******************************************************************************
-//Ember routes
 router.route('/users')
 
 
@@ -133,10 +90,7 @@ router.route('/authenticate')
       if (err != null) {
         // Handle error!
       } else {
-      // This is your Plaid access token - store somewhere persistent
-      // The access_token can be used to make Plaid API calls to
-      // retrieve accounts and transactions
-      var access_token = res.access_token;
+      // This is my Plaid access token -
       //exchange public token for a plaid access token
       plaidClient.getConnectUser(access_token, {
         gte: '30 days ago',
@@ -146,6 +100,43 @@ router.route('/authenticate')
       }
     });
   });
+
+
+  //routes by id -- user/:user
+router.route('/users/:users_id')
+
+ // update the User with this Id --> is working but getting  strange adapter error
+  .put(function(request, response){
+    console.log(response);
+    User.findById(request.params.users_id, function(error, user){
+      console.log(user);
+      if(error) response.send(error);
+      //update
+
+      user.accounts = request.body.accounts;
+      user.coffeeShops = request.body.coffee_shops;
+      user.lastCoffeeId = request.body.last_coffee_id;
+
+      //save the udpate
+      console.log(user);
+      user.save(function(error){
+        if(error) response.send(error);
+        response.json({message:'updated!'});
+      });
+    });
+  })
+
+  .delete(function (request, response){
+    User.remove({
+      _id:request.params.users_id
+    }, function(error, user){
+      if(error) res.send(error);
+
+      response.json({message: 'Successfully Deleted'});
+    });
+  });
+// *******************************************************************************
+
 
 
 // REGISTER OUR ROUTES

@@ -32,11 +32,13 @@ export default Ember.Route.extend({
        $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
      }
      Object.keys(shops).forEach(function(shop){
-         $("#sortedShops").append('<li>'+shop+'</li>');
-        shops[shop].forEach(function(transaction){
-           $('#sortedShops').append('<li>'+ transaction + '</li>');
-        });
-      })
-    }
+       Ember.$("#sortedShops").append('<li>'+shop+'</li>');
+       shops[shop].forEach(function(transaction){
+         Ember.$('#sortedShops').append('<li>'+ transaction + '</li>');
+       })
+
+     })
+
+   }
   }
 });

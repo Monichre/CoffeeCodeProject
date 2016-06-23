@@ -1,15 +1,37 @@
+@font-face {
+    font-family: simple;
+    src: url(../simple.ttf);
+}
+@font-face {
+    font-family: aliens;
+    src: url(../aliens.ttf);
+}
+@font-face {
+    font-family: biko;
+    src: url(../biko.otf);
+}
+
+
 body {
+  font-family: simple;
+}
+.navbar.navbar-default {
+  position: relative;;
+  z-index: 1000;
+}
+main {
   background: url(../images/coffee.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  font-family: simple;
+  position: absolute;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+
 }
-@font-face {
-    font-family: simple;
-    src: url(../simple.ttf);
-}
+
 main {
   display: block;
   margin: auto;
@@ -43,7 +65,111 @@ aside h1 {
   color: white;
   text-align: center;
 }
+
+<<<<<<< HEAD
+/*DROPDOWN CRAP*/
+.vr{
+  margin-top: 10px;
+  font-size: 35px;
+  color: #b1b1b1;
+}
+
+.signin{
+  cursor: pointer;
+  margin-top: 250px;
+  align-self: center;
+  color: white;
+  font-size: 150px;
+  text-shadow: 1px 2px 3px black;
+}
+
+#dropdown{
+  font-size: 40px;
+
+}
+
+a:link {
+  text-decoration: none;
+  color: #686868;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #686868;
+}
+
+a:active {
+  text-decoration: none;
+  color: #686868;
+}
+
+a:visited {
+  text-decoration: none;
+  color: #686868;
+}
+
+.droplist:hover{
+  background-color: #e7e7e7;
+}
+
+.droplist{
+  padding-left: 10px;
+  padding-right: 15px;
+/**********************************************/
+
+=======
+>>>>>>> f3e06efc390f69a9f263ae2c786fa09481985c25
+/***************************************************************************/
+/*//About Styles*/
+
+#about {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  min-width: 100%;
+  background: url(../images/b&w.jpeg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+#info {
+  position: relative;
+  margin: auto;
+  margin-top:15%;
+  display: block;
+  height: 200px;
+  width: 800px;
+  background-color: rgba(192,192,192,.8);
+  padding: 2%;
+}
+#info h2 {
+  text-align: center;
+  font-family: biko;
+}
+
+#info p {
+  font-family: Helvetica Neue;
+  font-weight: lighter;
+  color: black;
+
+  font-size: 20px;
+}
+.click {
+  margin: auto;
+  display: block;
+  text-align: center;
+}
+.click img {
+  height: 60px;
+  width: 60px;
+
 li, h1 {
   color: white;
   font-size: 25pt;
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+=======
+>>>>>>> f3e06efc390f69a9f263ae2c786fa09481985c25
 }
