@@ -44,11 +44,13 @@ var runningTests = false;
       resolve: 0,
       resolveRelative: 0,
       findModule: 0,
+      pendingQueueLength: 0
     };
     requirejs._stats = stats;
   }
 
   var stats;
+
   resetStats();
 
   loader = {
@@ -90,7 +92,7 @@ var runningTests = false;
   var defaultDeps = ['require', 'exports', 'module'];
 
   function Module(name, deps, callback, alias) {
-    stats.modules ++;
+    stats.modules++;
     this.id        = uuid++;
     this.name      = name;
     this.deps      = !deps.length && callback.length ? defaultDeps : deps;
@@ -101,6 +103,7 @@ var runningTests = false;
     this.isAlias = alias;
     this.reified = new Array(deps.length);
     this._foundDeps = false;
+    this.isPending = false;
   }
 
   Module.prototype.makeDefaultExport = function() {
@@ -117,6 +120,7 @@ var runningTests = false;
     stats.exports++;
 
     this.finalized = true;
+    this.isPending = false;
 
     if (loader.wrapModules) {
       this.callback = loader.wrapModules(this.name, this.callback);
@@ -136,6 +140,7 @@ var runningTests = false;
   Module.prototype.unsee = function() {
     this.finalized = false;
     this._foundDeps = false;
+    this.isPending = false;
     this.module = { exports: {}};
   };
 
@@ -155,6 +160,7 @@ var runningTests = false;
 
     stats.findDeps++;
     this._foundDeps = true;
+    this.isPending = true;
 
     var deps = this.deps;
 
@@ -231,9 +237,10 @@ var runningTests = false;
 
     if (!mod) { missingModule(name, referrer); }
 
-    if (pending) {
+    if (pending && !mod.finalized && !mod.isPending) {
       mod.findDeps(pending);
       pending.push(mod);
+      stats.pendingQueueLength++;
     }
     return mod;
   }
