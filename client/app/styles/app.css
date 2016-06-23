@@ -43,3 +43,7 @@ aside h1 {
   color: white;
   text-align: center;
 }
+li, h1 {
+  color: white;
+  font-size: 25pt;
+}

@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   coffeeShops: null,
   coffeeChains: null,
   thisUser: null,
+  freeCoffee: false,
   actions: {
     callApi(users) {
       var self = this;
@@ -72,18 +73,20 @@ export default Ember.Component.extend({
             sortedShops[shop.name].push(shop._id)
           }
         });
-        console.log(sortedShops);
+
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
+            self.set('freeCoffee', key);
             sortedShops[key].splice(0, 5);
             self.thisUser.set("coffeeShops", []);
             self.thisUser.set('lastCoffeeId', sortedShops[key]);
             self.thisUser.set('coffeeShops', sortedShops);
-            self.sendAction('coffeeChains', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }
         })
+        self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
       });
+    self.set('plaidCompleted', false);
     }
   }
 });

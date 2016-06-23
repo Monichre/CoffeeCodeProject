@@ -234,6 +234,7 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
     coffeeShops: null,
     coffeeChains: null,
     thisUser: null,
+    freeCoffee: false,
     actions: {
       callApi: function callApi(users) {
         var self = this;
@@ -301,18 +302,20 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
               sortedShops[shop.name].push(shop._id);
             }
           });
-          console.log(sortedShops);
+
           Object.keys(sortedShops).forEach(function (key) {
             if (sortedShops[key].length >= 5) {
+              self.set('freeCoffee', key);
               sortedShops[key].splice(0, 5);
               self.thisUser.set("coffeeShops", []);
               self.thisUser.set('lastCoffeeId', sortedShops[key]);
               self.thisUser.set('coffeeShops', sortedShops);
-              self.sendAction('coffeeChains', sortedShops);
               self.sendAction('sortedUser', self.thisUser);
             }
           });
+          self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
         });
+        self.set('plaidCompleted', false);
       }
     }
   });
@@ -616,7 +619,10 @@ define('client/routes/index', ['exports', 'ember'], function (exports, _ember) {
       sortedUser: function sortedUser(user) {
         user.save();
       },
-      displayChains: function displayChains(shops) {
+      displayChains: function displayChains(shops, freeCoffee) {
+        if (freeCoffee) {
+          $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
+        }
         Object.keys(shops).forEach(function (shop) {
           $("#sortedShops").append('<li>' + shop + '</li>');
           shops[shop].forEach(function (transaction) {
@@ -4817,17 +4823,26 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           dom.appendChild(el1, el2);
           var el2 = dom.createComment(" {{#plaid-link action='processPlaidToken'}}Verify Bank Account{{/plaid-link}} ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n\n\n  ");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          var el3 = dom.createTextNode("Call");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes() {
-          return [];
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1, 3]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createElementMorph(element0);
+          return morphs;
         },
-        statements: [],
+        statements: [["element", "action", ["callApi", ["get", "users", ["loc", [null, [4, 27], [4, 32]]]]], [], ["loc", [null, [4, 8], [4, 34]]]]],
         locals: [],
         templates: []
       };
@@ -4872,7 +4887,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
       meta: {
         "fragmentReason": {
           "name": "missing-wrapper",
-          "problems": ["wrong-type", "multiple-nodes"]
+          "problems": ["wrong-type"]
         },
         "revision": "Ember@2.6.0",
         "loc": {
@@ -4882,7 +4897,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 11,
             "column": 0
           }
         },
@@ -4896,23 +4911,16 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("button");
-        var el2 = dom.createTextNode("Call");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [1]);
-        var morphs = new Array(2);
+        var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createElementMorph(element0);
         dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]], ["element", "action", ["callApi", ["get", "users", ["loc", [null, [11, 27], [11, 32]]]]], [], ["loc", [null, [11, 8], [11, 34]]]]],
+      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
