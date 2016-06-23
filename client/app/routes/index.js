@@ -32,14 +32,6 @@ export default Ember.Route.extend({
        $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
      }
      Object.keys(shops).forEach(function(shop){
-<<<<<<< HEAD
-         $("#sortedShops").append('<li>'+shop+'</li>');
-        shops[shop].forEach(function(transaction){
-           $('#sortedShops').append('<li>'+shops[shop] + '</li>');
-        });
-      })
-    }
-=======
        Ember.$("#sortedShops").append('<li>'+shop+'</li>');
        shops[shop].forEach(function(transaction){
          Ember.$('#sortedShops').append('<li>'+shops[shop] + '</li>');
@@ -48,6 +40,5 @@ export default Ember.Route.extend({
      })
 
    }
->>>>>>> 4b3761f7aba1eed0f7b9fd0e960c623cecde5239
   }
 });
