@@ -1,0 +1,45 @@
+body {
+  background: url(../images/coffee.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: simple;
+}
+@font-face {
+    font-family: simple;
+    src: url(../simple.ttf);
+}
+main {
+  display: block;
+  margin: auto;
+}
+
+button {
+  text-align: center;
+  border: none;
+  background-color: transparent;
+  font-size: 60px;
+  color: white;
+  font-family: simple;
+  display: block;
+  margin: auto;
+  margin-top: 20%;
+  text-shadow: 2px 2px 2px black;
+}
+
+a {
+  font-size: 30px!important;
+}
+aside {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+aside h1 {
+  float: left;
+  width: 33.333%;
+  color: white;
+  text-align: center;
+}
