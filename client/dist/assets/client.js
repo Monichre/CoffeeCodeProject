@@ -234,10 +234,11 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
     coffeeShops: null,
     coffeeChains: null,
     thisUser: null,
+    freeCoffee: false,
     actions: {
       callApi: function callApi(users) {
         var self = this;
-        $.ajax({
+        _ember["default"].$.ajax({
           type: "POST",
           url: "http://localhost:8080/api/v1/test"
         }).then(function (data) {
@@ -288,11 +289,14 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
             var newUserShops = newUserCoffee.splice(-3, 3);
             newUser.coffeeShops = newUserCoffee;
             self.set('coffeeShops', newUserShops);
-            self.set('thisUser', user);
+            // self.set('thisUser', user);
             self.sendAction('newUser', newUser);
           }
 
           var sortedShops = {};
+
+          // $("#target").text("<li>" sortedShops[0] "</li>");
+          // $("#target").text("<li>" sortedShops[shop.name] "</li>")
 
           self.coffeeShops.forEach(function (shop) {
             if (!Object.keys(sortedShops).includes(shop.name)) {
@@ -301,18 +305,32 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
               sortedShops[shop.name].push(shop._id);
             }
           });
+
+          ////DROPDOWN MENU CRAP
+          var shops = Object.keys(sortedShops);
+          console.log(shops);
+
           console.log(sortedShops);
-          Object.keys(sortedShops).forEach(function (key) {
-            if (sortedShops[key].length >= 5) {
-              sortedShops[key].splice(0, 5);
-              self.thisUser.set("coffeeShops", []);
-              self.thisUser.set('lastCoffeeId', sortedShops[key]);
-              self.thisUser.set('coffeeShops', sortedShops);
-              self.sendAction('coffeeChains', sortedShops);
-              self.sendAction('sortedUser', self.thisUser);
-            }
+
+          shops.forEach(function (shop) {
+            console.log(shop);
+            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " + +"</a></li>");
           });
+          /////////////
         });
+
+        Object.keys(sortedShops).forEach(function (key) {
+          if (sortedShops[key].length >= 5) {
+            self.set('freeCoffee', key);
+            sortedShops[key].splice(0, 5);
+            self.thisUser.set("coffeeShops", []);
+            self.thisUser.set('lastCoffeeId', sortedShops[key]);
+            self.thisUser.set('coffeeShops', sortedShops);
+            self.sendAction('sortedUser', self.thisUser);
+          }
+        });
+        self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
+        self.set('plaidCompleted', false);
       }
     }
   });
@@ -339,6 +357,11 @@ define('client/components/plaid-link', ['exports', 'ember-plaid/components/plaid
     product: plaidConfig.product,
     key: plaidConfig.key,
     env: plaidConfig.env
+  });
+});
+define('client/components/transaction-tile', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    actions: {}
   });
 });
 define('client/helpers/is-equal', ['exports', 'ember-bootstrap/helpers/is-equal'], function (exports, _emberBootstrapHelpersIsEqual) {
@@ -581,9 +604,14 @@ define('client/router', ['exports', 'ember', 'client/config/environment'], funct
     location: _clientConfigEnvironment['default'].locationType
   });
 
-  Router.map(function () {});
+  Router.map(function () {
+    this.route('about');
+  });
 
   exports['default'] = Router;
+});
+define('client/routes/about', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({});
 });
 define('client/routes/application', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
@@ -595,7 +623,7 @@ define('client/routes/index', ['exports', 'ember'], function (exports, _ember) {
     },
     actions: {
       processPlaidToken: function processPlaidToken(public_token) {
-        $.ajax({
+        _ember['default'].$.ajax({
           url: 'http://localhost:8080/api/v1/authenticate',
           method: 'POST',
           data: {
@@ -616,11 +644,14 @@ define('client/routes/index', ['exports', 'ember'], function (exports, _ember) {
       sortedUser: function sortedUser(user) {
         user.save();
       },
-      displayChains: function displayChains(shops) {
+      displayChains: function displayChains(shops, freeCoffee) {
+        if (freeCoffee) {
+          $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
+        }
         Object.keys(shops).forEach(function (shop) {
-          $("#sortedShops").append('<li>' + shop + '</li>');
+          _ember['default'].$("#sortedShops").append('<li>' + shop + '</li>');
           shops[shop].forEach(function (transaction) {
-            $('#sortedShops').append('<li>' + shops[shop] + '</li>');
+            _ember['default'].$('#sortedShops').append('<li>' + transaction + '</li>');
           });
         });
       }
@@ -649,6 +680,109 @@ define('client/services/ajax', ['exports', 'ember-ajax/services/ajax'], function
     }
   });
 });
+define("client/templates/about", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "missing-wrapper",
+          "problems": ["multiple-nodes"]
+        },
+        "revision": "Ember@2.6.0",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 19,
+            "column": 0
+          }
+        },
+        "moduleName": "client/templates/about.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "about");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "info");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        var el4 = dom.createTextNode("\n      This App has been a joint venture in the joys of programming! Written in Javascript, this application is running a backend server\n      written in ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        var el5 = dom.createTextNode("Node.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(" and ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        var el5 = dom.createTextNode("Express.js");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(". We've implemented MongoDB as our database, and are using the Plaid API (Venmo, Acorns, RobinHood).\n      Our front end framework is managed by Ember.\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("h2");
+        var el4 = dom.createTextNode("Meet the team");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n      ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("a");
+        dom.setAttribute(el3, "class", "click");
+        dom.setAttribute(el3, "href", "#");
+        var el4 = dom.createElement("span");
+        var el5 = dom.createElement("img");
+        dom.setAttribute(el5, "src", "/images/coffeeMug.png");
+        dom.setAttribute(el5, "alt", "");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "team");
+        var el3 = dom.createTextNode("\n\n\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes() {
+        return [];
+      },
+      statements: [],
+      locals: [],
+      templates: []
+    };
+  })());
+});
 define("client/templates/application", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -665,7 +799,7 @@ define("client/templates/application", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 31,
+            "line": 28,
             "column": 0
           }
         },
@@ -724,9 +858,15 @@ define("client/templates/application", ["exports"], function (exports) {
         var el4 = dom.createTextNode("\n         ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("a");
-        dom.setAttribute(el4, "class", "navbar-brand");
+        dom.setAttribute(el4, "class", "navbar-brand active");
         dom.setAttribute(el4, "href", "#");
         var el5 = dom.createTextNode("Coffee Card");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4, "class", "vr");
+        dom.setAttribute(el4, "height", "50px");
+        var el5 = dom.createTextNode("|");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n       ");
@@ -744,16 +884,6 @@ define("client/templates/application", ["exports"], function (exports) {
         var el5 = dom.createTextNode("\n           ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
-        dom.setAttribute(el5, "class", "active");
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
-        var el7 = dom.createTextNode("Home");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n           ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
         var el6 = dom.createElement("a");
         dom.setAttribute(el6, "href", "#");
         var el7 = dom.createTextNode("Bean Trail");
@@ -764,7 +894,7 @@ define("client/templates/application", ["exports"], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
         var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
+        dom.setAttribute(el6, "href", "/about");
         var el7 = dom.createTextNode("About");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
@@ -794,36 +924,10 @@ define("client/templates/application", ["exports"], function (exports) {
         dom.setAttribute(el6, "class", "dropdown-menu");
         var el7 = dom.createTextNode("\n               ");
         dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createElement("a");
-        dom.setAttribute(el8, "href", "#");
-        var el9 = dom.createTextNode("Starbucks");
-        dom.appendChild(el8, el9);
+        var el7 = dom.createElement("div");
+        dom.setAttribute(el7, "id", "dropdown");
+        var el8 = dom.createTextNode("\n              ");
         dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n               ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createElement("a");
-        dom.setAttribute(el8, "href", "#");
-        var el9 = dom.createTextNode("Pete's Coffee");
-        dom.appendChild(el8, el9);
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n               ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createElement("a");
-        dom.setAttribute(el8, "href", "#");
-        var el9 = dom.createTextNode("Fresh Pot");
-        dom.appendChild(el8, el9);
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n               ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        dom.setAttribute(el7, "role", "separator");
-        dom.setAttribute(el7, "class", "divider");
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n             ");
         dom.appendChild(el6, el7);
@@ -860,7 +964,7 @@ define("client/templates/application", ["exports"], function (exports) {
         morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [30, 0], [30, 10]]]]],
+      statements: [["content", "outlet", ["loc", [null, [27, 0], [27, 10]]]]],
       locals: [],
       templates: []
     };
@@ -4817,17 +4921,29 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           dom.appendChild(el1, el2);
           var el2 = dom.createComment(" {{#plaid-link action='processPlaidToken'}}Verify Bank Account{{/plaid-link}} ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n\n\n  ");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("center");
+          var el3 = dom.createElement("p");
+          dom.setAttribute(el3, "class", "signin");
+          var el4 = dom.createTextNode("Sign in");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes() {
-          return [];
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1, 3, 0]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createElementMorph(element0);
+          return morphs;
         },
-        statements: [],
+        statements: [["element", "action", ["callApi", ["get", "users", ["loc", [null, [4, 49], [4, 54]]]]], [], ["loc", [null, [4, 30], [4, 56]]]]],
         locals: [],
         templates: []
       };
@@ -4872,7 +4988,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
       meta: {
         "fragmentReason": {
           "name": "missing-wrapper",
-          "problems": ["wrong-type", "multiple-nodes"]
+          "problems": ["wrong-type"]
         },
         "revision": "Ember@2.6.0",
         "loc": {
@@ -4882,7 +4998,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 11,
             "column": 0
           }
         },
@@ -4896,23 +5012,16 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("button");
-        var el2 = dom.createTextNode("Call");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [1]);
-        var morphs = new Array(2);
+        var morphs = new Array(1);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createElementMorph(element0);
         dom.insertBoundary(fragment, 0);
+        dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]], ["element", "action", ["callApi", ["get", "users", ["loc", [null, [11, 27], [11, 32]]]]], [], ["loc", [null, [11, 8], [11, 34]]]]],
+      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -5050,6 +5159,59 @@ define("client/templates/components/plaid-link", ["exports"], function (exports)
     };
   })());
 });
+define("client/templates/components/transaction-tile", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "triple-curlies"
+        },
+        "revision": "Ember@2.6.0",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 0
+          }
+        },
+        "moduleName": "client/templates/components/transaction-tile.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("li");
+        dom.setAttribute(el1, "class", "transaction-box");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]), 0, 0);
+        return morphs;
+      },
+      statements: [["content", "model.transaction", ["loc", [null, [2, 5], [2, 26]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
 define("client/templates/index", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -5143,7 +5305,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("client/app")["default"].create({"name":"client","version":"0.0.0+37d6402b"});
+  require("client/app")["default"].create({"name":"client","version":"0.0.0+b96ef750"});
 }
 
 /* jshint ignore:end */

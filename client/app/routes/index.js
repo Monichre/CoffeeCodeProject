@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   },
   actions: {
     processPlaidToken(public_token){
-      $.ajax({
+      Ember.$.ajax({
         url:'http://localhost:8080/api/v1/authenticate',
         method:'POST',
         data:{
@@ -27,11 +27,14 @@ export default Ember.Route.extend({
    sortedUser(user){
      user.save();
    },
-   displayChains(shops){
+   displayChains(shops, freeCoffee){
+     if(freeCoffee){
+       $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
+     }
      Object.keys(shops).forEach(function(shop){
-       $("#sortedShops").append('<li>'+shop+'</li>');
+       Ember.$("#sortedShops").append('<li>'+shop+'</li>');
        shops[shop].forEach(function(transaction){
-         $('#sortedShops').append('<li>'+shops[shop] + '</li>');
+         Ember.$('#sortedShops').append('<li>'+ transaction + '</li>');
        })
 
      })

@@ -5,10 +5,11 @@ export default Ember.Component.extend({
   coffeeShops: null,
   coffeeChains: null,
   thisUser: null,
+  freeCoffee: false,
   actions: {
     callApi(users) {
       var self = this;
-      $.ajax({
+      Ember.$.ajax({
         type: "POST",
         url: "http://localhost:8080/api/v1/test"
       }).then(function(data) {
@@ -69,8 +70,6 @@ export default Ember.Component.extend({
               // $("#target").text("<li>" sortedShops[0] "</li>");
               // $("#target").text("<li>" sortedShops[shop.name] "</li>")
 
-
-
         self.coffeeShops.forEach(function(shop){
           if(!(Object.keys(sortedShops).includes(shop.name))){
             sortedShops[shop.name] = [shop._id];
@@ -92,18 +91,20 @@ export default Ember.Component.extend({
           });
           /////////////
 
-        // console.log(sortedShops);
+        });
+
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
+            self.set('freeCoffee', key);
             sortedShops[key].splice(0, 5);
             self.thisUser.set("coffeeShops", []);
             self.thisUser.set('lastCoffeeId', sortedShops[key]);
             self.thisUser.set('coffeeShops', sortedShops);
-            self.sendAction('coffeeChains', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }
         })
-      });
+        self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
+    self.set('plaidCompleted', false);
     }
   }
 });
