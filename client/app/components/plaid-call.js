@@ -104,6 +104,10 @@ export default Ember.Component.extend({
           }
         })
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
+<<<<<<< HEAD
+=======
+      });
+>>>>>>> f3e06efc390f69a9f263ae2c786fa09481985c25
     self.set('plaidCompleted', false);
     }
   }
@@ -111,7 +115,7 @@ export default Ember.Component.extend({
 
 // processPlaidToken(token) {
 //   var self = this;
-//   $.ajax({
+//   Ember.$.ajax({
 //     type: "POST",
 //     url: "http://localhost:8080/api/v1/authenticate",
 //     data: {

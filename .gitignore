@@ -3,4 +3,11 @@
 # compiled output
 dist/
 tmp/
+<<<<<<< HEAD
 node_modules/
+=======
+
+# dependencies
+node_modules/
+bower_components/
+>>>>>>> f3e06efc390f69a9f263ae2c786fa09481985c25
