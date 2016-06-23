@@ -7,24 +7,20 @@ export default Ember.Component.extend({
   thisUser: null,
   freeCoffee: false,
   users: function(){
-    return this.store.findAll('user')
+    return this.store.findAll('user');
   },
   actions: {
-    processPlaidToken(token) {
+    callApi(token) {
       var self = this;
       Ember.$.ajax({
         type: "POST",
-        url: "http://localhost:8080/api/v1/authenticate",
-        data: {
-          public_token: token,
-        }}).then(function(data) {
-          console.log(data);
+        url: "http://localhost:8080/api/v1/test",
+        }).then(function(data) {
         var users = self.users;
         var noUser = true;
         var coffeeShops = []; // local variable
 
         users.forEach(function(user){
-          console.log(user.id);
           if(user.get('accounts').includes(data[0].account)){
             noUser = false;
             data.forEach(function(transaction) {
@@ -89,17 +85,12 @@ export default Ember.Component.extend({
 
           ////DROPDOWN MENU CRAP
           var shops = Object.keys(sortedShops);
-          console.log(shops);
-
-          console.log(sortedShops);
-
           shops.forEach(function(shop){
-            console.log(shop);
             $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
           });
           /////////////
 
-        });
+
 
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
@@ -111,10 +102,9 @@ export default Ember.Component.extend({
             self.sendAction('sortedUser', self.thisUser);
           }
         })
-        console.log(sortedShops);
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
+        self.set('plaidCompleted', false);
       });
-    self.set('plaidCompleted', false);
     }
   }
 });

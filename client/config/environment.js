@@ -7,9 +7,9 @@ module.exports = function(environment) {
     modulePrefix: 'client',
     environment: environment,
     'ember-plaid': {
-      clientName: client_id,
+      clientName: 'Name',
       product: 'connect',
-      key: client_key,
+      key: 'test_key',
       env: 'tartan'
     },
     contentSecurityPolicy: {
