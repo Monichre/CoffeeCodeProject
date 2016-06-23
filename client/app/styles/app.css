@@ -1,10 +1,13 @@
 body {
+  font-family: simple;
+}
+main {
   background: url(../images/coffee.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  font-family: simple;
+
 }
 @font-face {
     font-family: simple;
@@ -42,4 +45,18 @@ aside h1 {
   width: 33.333%;
   color: white;
   text-align: center;
+}
+
+/***************************************************************************/
+/*//About Styles*/
+
+#about {
+  margin: auto;
+  min-height: 100%;
+  min-width: 100%;
+  background: url(../images/b&w.jpeg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

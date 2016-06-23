@@ -565,9 +565,14 @@ define('client/router', ['exports', 'ember', 'client/config/environment'], funct
     location: _clientConfigEnvironment['default'].locationType
   });
 
-  Router.map(function () {});
+  Router.map(function () {
+    this.route('about');
+  });
 
   exports['default'] = Router;
+});
+define('client/routes/about', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({});
 });
 define('client/routes/application', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
@@ -621,6 +626,51 @@ define('client/services/ajax', ['exports', 'ember-ajax/services/ajax'], function
       return _emberAjaxServicesAjax['default'];
     }
   });
+});
+define("client/templates/about", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "triple-curlies"
+        },
+        "revision": "Ember@2.6.0",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 0
+          }
+        },
+        "moduleName": "client/templates/about.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "about");
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes() {
+        return [];
+      },
+      statements: [],
+      locals: [],
+      templates: []
+    };
+  })());
 });
 define("client/templates/application", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -737,7 +787,7 @@ define("client/templates/application", ["exports"], function (exports) {
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
         var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
+        dom.setAttribute(el6, "href", "/about");
         var el7 = dom.createTextNode("About");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
@@ -5111,7 +5161,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("client/app")["default"].create({"name":"client","version":"0.0.0+55ced3e4"});
+  require("client/app")["default"].create({"name":"client","version":"0.0.0+37d6402b"});
 }
 
 /* jshint ignore:end */
