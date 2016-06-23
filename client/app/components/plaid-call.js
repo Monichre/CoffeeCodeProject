@@ -84,9 +84,10 @@ export default Ember.Component.extend({
         });
 
           ////DROPDOWN MENU CRAP
+          console.log()
           var shops = Object.keys(sortedShops);
           shops.forEach(function(shop){
-            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
+            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + "  (" + sortedShops[shop].length + ")</a></li>");
           });
           /////////////
 
