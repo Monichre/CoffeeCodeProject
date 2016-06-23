@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   actions: {
     callApi(users) {
       var self = this;
-      $.ajax({
+      Ember.$.ajax({
         type: "POST",
         url: "http://localhost:8080/api/v1/test"
       }).then(function(data) {
@@ -93,7 +93,7 @@ export default Ember.Component.extend({
 
 // processPlaidToken(token) {
 //   var self = this;
-//   $.ajax({
+//   Ember.$.ajax({
 //     type: "POST",
 //     url: "http://localhost:8080/api/v1/authenticate",
 //     data: {
