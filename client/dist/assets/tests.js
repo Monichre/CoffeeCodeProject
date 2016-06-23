@@ -22,7 +22,7 @@ define('client/tests/components/plaid-call.jshint', ['exports'], function (expor
   QUnit.module('JSHint | components/plaid-call.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/plaid-call.js should pass jshint.\ncomponents/plaid-call.js: line 77, col 50, Missing semicolon.\ncomponents/plaid-call.js: line 90, col 86, Confusing plusses.\ncomponents/plaid-call.js: line 105, col 11, Missing semicolon.\ncomponents/plaid-call.js: line 90, col 13, \'$\' is not defined.\ncomponents/plaid-call.js: line 96, col 21, \'sortedShops\' is not defined.\ncomponents/plaid-call.js: line 97, col 14, \'sortedShops\' is not defined.\ncomponents/plaid-call.js: line 99, col 13, \'sortedShops\' is not defined.\ncomponents/plaid-call.js: line 101, col 47, \'sortedShops\' is not defined.\ncomponents/plaid-call.js: line 102, col 46, \'sortedShops\' is not defined.\ncomponents/plaid-call.js: line 106, col 41, \'sortedShops\' is not defined.\n\n10 errors');
+    assert.ok(false, 'components/plaid-call.js should pass jshint.\ncomponents/plaid-call.js: line 90, col 84, Confusing plusses.\ncomponents/plaid-call.js: line 90, col 11, \'$\' is not defined.\n\n2 errors');
   });
 });
 define('client/tests/components/transaction-tile.jshint', ['exports'], function (exports) {
@@ -281,6 +281,155 @@ define('client/tests/integration/components/plaid-call-test.jshint', ['exports']
     assert.ok(true, 'integration/components/plaid-call-test.js should pass jshint.');
   });
 });
+define('client/tests/integration/components/transaction-tile-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForComponent)('transaction-tile', 'Integration | Component | transaction tile', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 20
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'transaction-tile', ['loc', [null, [1, 0], [1, 20]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'fragmentReason': false,
+            'revision': 'Ember@2.6.0',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      template block text\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'transaction-tile', [], [], 0, null, ['loc', [null, [2, 4], [4, 25]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
+define('client/tests/integration/components/transaction-tile-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | integration/components/transaction-tile-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/transaction-tile-test.js should pass jshint.');
+  });
+});
 define('client/tests/models/user.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -332,7 +481,7 @@ define('client/tests/routes/index.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | routes/index.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass jshint.\nroutes/index.js: line 15, col 24, \'data\' is defined but never used.\nroutes/index.js: line 23, col 21, \'id\' is defined but never used.\nroutes/index.js: line 38, col 10, Missing semicolon.\nroutes/index.js: line 40, col 8, Missing semicolon.\nroutes/index.js: line 32, col 8, \'$\' is not defined.\n\n5 errors');
+    assert.ok(false, 'routes/index.js should pass jshint.\nroutes/index.js: line 15, col 24, \'data\' is defined but never used.\nroutes/index.js: line 23, col 21, \'id\' is defined but never used.\nroutes/index.js: line 38, col 10, Missing semicolon.\nroutes/index.js: line 39, col 8, Missing semicolon.\nroutes/index.js: line 32, col 8, \'$\' is not defined.\n\n5 errors');
   });
 });
 define('client/tests/serializers/application.jshint', ['exports'], function (exports) {
@@ -430,6 +579,27 @@ define('client/tests/unit/models/coffee-test.jshint', ['exports'], function (exp
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/models/coffee-test.js should pass jshint.');
+  });
+});
+define('client/tests/unit/routes/about-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:about', 'Unit | Route | about', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('client/tests/unit/routes/about-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/about-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/about-test.js should pass jshint.');
   });
 });
 define('client/tests/unit/routes/application-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {

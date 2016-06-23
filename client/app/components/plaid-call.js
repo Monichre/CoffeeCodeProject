@@ -79,19 +79,17 @@ export default Ember.Component.extend({
 
         });
 
-          ////DROPDOWN MENU CRAP
-          var shops = Object.keys(sortedShops);
-          console.log(shops);
+        ////DROPDOWN MENU CRAP
+        var shops = Object.keys(sortedShops);
+        console.log(shops);
 
-          console.log(sortedShops);
+        console.log(sortedShops);
 
-          shops.forEach(function(shop){
-            console.log(shop);
-            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
-          });
-          /////////////
-
+        shops.forEach(function(shop){
+          console.log(shop);
+          $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
         });
+        /////////////
 
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
@@ -104,11 +102,8 @@ export default Ember.Component.extend({
           }
         });
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
-<<<<<<< HEAD
-=======
+        self.set('plaidCompleted', false);
       });
->>>>>>> f3e06efc390f69a9f263ae2c786fa09481985c25
-    self.set('plaidCompleted', false);
     }
   }
 });

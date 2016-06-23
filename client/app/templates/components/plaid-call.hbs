@@ -2,10 +2,12 @@
   <div id="target">
   <!-- {{#plaid-link action='processPlaidToken'}}Verify Bank Account{{/plaid-link}} -->
     <center><p class="signin" {{action 'callApi' users}}>Sign in</p></center>
-
-<button {{action 'callApi' users}}>Call</button>
+    <button {{action 'callApi' users}}>Call</button>
 
   </div>
 {{else}}
+
+<div>
+</div>
 
 {{/if}}

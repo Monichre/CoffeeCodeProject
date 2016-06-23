@@ -317,27 +317,27 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
             $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " + +"</a></li>");
           });
           /////////////
-        });
 
-        Object.keys(sortedShops).forEach(function (key) {
-          if (sortedShops[key].length >= 5) {
-            self.set('freeCoffee', key);
-            sortedShops[key].splice(0, 5);
-            self.thisUser.set("coffeeShops", []);
-            self.thisUser.set('lastCoffeeId', sortedShops[key]);
-            self.thisUser.set('coffeeShops', sortedShops);
-            self.sendAction('sortedUser', self.thisUser);
-          }
+          Object.keys(sortedShops).forEach(function (key) {
+            if (sortedShops[key].length >= 5) {
+              self.set('freeCoffee', key);
+              sortedShops[key].splice(0, 5);
+              self.thisUser.set("coffeeShops", []);
+              self.thisUser.set('lastCoffeeId', sortedShops[key]);
+              self.thisUser.set('coffeeShops', sortedShops);
+              self.sendAction('sortedUser', self.thisUser);
+            }
+          });
+          self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
+          self.set('plaidCompleted', false);
         });
-        self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
-        self.set('plaidCompleted', false);
       }
     }
   });
 
   // processPlaidToken(token) {
   //   var self = this;
-  //   $.ajax({
+  //   Ember.$.ajax({
   //     type: "POST",
   //     url: "http://localhost:8080/api/v1/authenticate",
   //     data: {
@@ -799,7 +799,7 @@ define("client/templates/application", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 28,
+            "line": 31,
             "column": 0
           }
         },
@@ -858,15 +858,9 @@ define("client/templates/application", ["exports"], function (exports) {
         var el4 = dom.createTextNode("\n         ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("a");
-        dom.setAttribute(el4, "class", "navbar-brand active");
+        dom.setAttribute(el4, "class", "navbar-brand");
         dom.setAttribute(el4, "href", "#");
         var el5 = dom.createTextNode("Coffee Card");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("span");
-        dom.setAttribute(el4, "class", "vr");
-        dom.setAttribute(el4, "height", "50px");
-        var el5 = dom.createTextNode("|");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n       ");
@@ -881,6 +875,16 @@ define("client/templates/application", ["exports"], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("ul");
         dom.setAttribute(el4, "class", "nav navbar-nav");
+        var el5 = dom.createTextNode("\n           ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        dom.setAttribute(el5, "class", "active");
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6, "href", "#");
+        var el7 = dom.createTextNode("Home");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n           ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
@@ -924,10 +928,36 @@ define("client/templates/application", ["exports"], function (exports) {
         dom.setAttribute(el6, "class", "dropdown-menu");
         var el7 = dom.createTextNode("\n               ");
         dom.appendChild(el6, el7);
-        var el7 = dom.createElement("div");
-        dom.setAttribute(el7, "id", "dropdown");
-        var el8 = dom.createTextNode("\n              ");
+        var el7 = dom.createElement("li");
+        var el8 = dom.createElement("a");
+        dom.setAttribute(el8, "href", "#");
+        var el9 = dom.createTextNode("Starbucks");
+        dom.appendChild(el8, el9);
         dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n               ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("li");
+        var el8 = dom.createElement("a");
+        dom.setAttribute(el8, "href", "#");
+        var el9 = dom.createTextNode("Pete's Coffee");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n               ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("li");
+        var el8 = dom.createElement("a");
+        dom.setAttribute(el8, "href", "#");
+        var el9 = dom.createTextNode("Fresh Pot");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n               ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("li");
+        dom.setAttribute(el7, "role", "separator");
+        dom.setAttribute(el7, "class", "divider");
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n             ");
         dom.appendChild(el6, el7);
@@ -964,7 +994,7 @@ define("client/templates/application", ["exports"], function (exports) {
         morphs[0] = dom.createMorphAt(fragment, 2, 2, contextualElement);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [27, 0], [27, 10]]]]],
+      statements: [["content", "outlet", ["loc", [null, [30, 0], [30, 10]]]]],
       locals: [],
       templates: []
     };
@@ -4901,7 +4931,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 8,
               "column": 0
             }
           },
@@ -4930,6 +4960,12 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          var el3 = dom.createTextNode("Call");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n\n  ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -4938,12 +4974,15 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1, 3, 0]);
-          var morphs = new Array(1);
-          morphs[0] = dom.createElementMorph(element0);
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(element0, [3, 0]);
+          var element2 = dom.childAt(element0, [5]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createElementMorph(element1);
+          morphs[1] = dom.createElementMorph(element2);
           return morphs;
         },
-        statements: [["element", "action", ["callApi", ["get", "users", ["loc", [null, [4, 49], [4, 54]]]]], [], ["loc", [null, [4, 30], [4, 56]]]]],
+        statements: [["element", "action", ["callApi", ["get", "users", ["loc", [null, [4, 49], [4, 54]]]]], [], ["loc", [null, [4, 30], [4, 56]]]], ["element", "action", ["callApi", ["get", "users", ["loc", [null, [5, 31], [5, 36]]]]], [], ["loc", [null, [5, 12], [5, 38]]]]],
         locals: [],
         templates: []
       };
@@ -4956,11 +4995,11 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           "loc": {
             "source": null,
             "start": {
-              "line": 7,
+              "line": 8,
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 13,
               "column": 0
             }
           },
@@ -4972,6 +5011,12 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           return el0;
@@ -4998,7 +5043,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 14,
             "column": 0
           }
         },
@@ -5021,7 +5066,7 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
         dom.insertBoundary(fragment, null);
         return morphs;
       },
-      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [10, 7]]]]],
+      statements: [["block", "if", [["get", "plaidCompleted", ["loc", [null, [1, 6], [1, 20]]]]], [], 0, 1, ["loc", [null, [1, 0], [13, 7]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -5305,7 +5350,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("client/app")["default"].create({"name":"client","version":"0.0.0+b96ef750"});
+  require("client/app")["default"].create({"name":"client","version":"0.0.0+f3e06efc"});
 }
 
 /* jshint ignore:end */

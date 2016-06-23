@@ -34,15 +34,9 @@ export default Ember.Route.extend({
      Object.keys(shops).forEach(function(shop){
        Ember.$("#sortedShops").append('<li>'+shop+'</li>');
        shops[shop].forEach(function(transaction){
-<<<<<<< HEAD
          Ember.$('#sortedShops').append('<li>'+ transaction + '</li>');
-=======
-         Ember.$('#sortedShops').append('<li>'+shops[shop] + '</li>');
->>>>>>> f3e06efc390f69a9f263ae2c786fa09481985c25
        })
-
      })
-
-   }
+   },
   }
 });
