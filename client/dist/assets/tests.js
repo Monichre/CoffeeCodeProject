@@ -22,7 +22,7 @@ define('client/tests/components/plaid-call.jshint', ['exports'], function (expor
   QUnit.module('JSHint | components/plaid-call.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/plaid-call.js should pass jshint.\ncomponents/plaid-call.js: line 9, col 7, \'$\' is not defined.\n\n1 error');
+    assert.ok(false, 'components/plaid-call.js should pass jshint.\ncomponents/plaid-call.js: line 72, col 50, Missing semicolon.\ncomponents/plaid-call.js: line 85, col 11, Missing semicolon.\ncomponents/plaid-call.js: line 11, col 7, \'$\' is not defined.\ncomponents/plaid-call.js: line 62, col 32, \'user\' is not defined.\n\n4 errors');
   });
 });
 define('client/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -314,7 +314,7 @@ define('client/tests/routes/index.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | routes/index.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/index.js should pass jshint.\nroutes/index.js: line 15, col 24, \'data\' is defined but never used.\nroutes/index.js: line 17, col 9, Missing semicolon.\nroutes/index.js: line 23, col 21, \'id\' is defined but never used.\nroutes/index.js: line 9, col 7, \'$\' is not defined.\n\n4 errors');
+    assert.ok(false, 'routes/index.js should pass jshint.\nroutes/index.js: line 15, col 24, \'data\' is defined but never used.\nroutes/index.js: line 23, col 21, \'id\' is defined but never used.\nroutes/index.js: line 33, col 37, \'transaction\' is defined but never used.\nroutes/index.js: line 35, col 10, Missing semicolon.\nroutes/index.js: line 37, col 8, Missing semicolon.\nroutes/index.js: line 9, col 7, \'$\' is not defined.\nroutes/index.js: line 32, col 8, \'$\' is not defined.\nroutes/index.js: line 34, col 10, \'$\' is not defined.\n\n8 errors');
   });
 });
 define('client/tests/serializers/application.jshint', ['exports'], function (exports) {
