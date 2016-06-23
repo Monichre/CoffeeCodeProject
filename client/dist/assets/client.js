@@ -228,26 +228,32 @@ define('client/components/ember-wormhole', ['exports', 'ember-wormhole/component
     }
   });
 });
-define("client/components/plaid-call", ["exports", "ember"], function (exports, _ember) {
-  exports["default"] = _ember["default"].Component.extend({
+define('client/components/plaid-call', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
     plaidCompleted: true,
     coffeeShops: null,
     coffeeChains: null,
     thisUser: null,
     freeCoffee: false,
+    users: function users() {
+      return this.store.findAll('user');
+    },
     actions: {
-      callApi: function callApi(users) {
+      processPlaidToken: function processPlaidToken(token) {
         var self = this;
-        $.ajax({
+        _ember['default'].$.ajax({
           type: "POST",
-          url: "http://localhost:8080/api/v1/test"
-        }).then(function (data) {
-
+          url: "http://localhost:8080/api/v1/authenticate",
+          data: {
+            public_token: token
+          } }).then(function (data) {
+          console.log(data);
+          var users = self.users;
           var noUser = true;
           var coffeeShops = []; // local variable
 
           users.forEach(function (user) {
-
+            console.log(user.id);
             if (user.get('accounts').includes(data[0].account)) {
               noUser = false;
               data.forEach(function (transaction) {
@@ -274,22 +280,24 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
             var newUserCoffee = [];
             data.forEach(function (transaction) {
               // this if block populates the user account model property
-              if (!newUser.accounts.includes(transaction.account)) {
-                newUser.accounts.push(transaction.account);
+              if (newUser.accounts.indexOf(transaction._account) < 0) {
+                newUser.accounts.push(transaction._account);
               }
               // this if block populates the user coffeeShops model property
-              if (transaction.category.includes("Coffee Shop")) {
-                if (!newUserCoffee.includes(transaction)) {
-                  newUserCoffee.push(transaction);
+              if (transaction.category) {
+                if (transaction.category.includes("Coffee Shop")) {
+                  if (!newUserCoffee.includes(transaction)) {
+                    newUserCoffee.push(transaction);
+                  }
                 }
               }
             });
             //This if block popoulates the lastCoffeeId model property
             newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length - 4]._id;
             var newUserShops = newUserCoffee.splice(-3, 3);
-            newUser.coffeeShops = newUserCoffee;
+            newUser.coffeeShops = newUserShops;
             self.set('coffeeShops', newUserShops);
-            self.set('thisUser', user);
+            // self.set('thisUser', user);
             self.sendAction('newUser', newUser);
           }
 
@@ -313,6 +321,7 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
               self.sendAction('sortedUser', self.thisUser);
             }
           });
+          console.log(sortedShops);
           self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
         });
         self.set('plaidCompleted', false);
@@ -322,7 +331,7 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
 
   // processPlaidToken(token) {
   //   var self = this;
-  //   $.ajax({
+  //   Ember.$.ajax({
   //     type: "POST",
   //     url: "http://localhost:8080/api/v1/authenticate",
   //     data: {
@@ -332,6 +341,13 @@ define("client/components/plaid-call", ["exports", "ember"], function (exports, 
   //     self.set('plaidCompleted', false);
   //   });
   // }
+
+  // callApi(users) {
+  //   var self = this;
+  //   Ember.$.ajax({
+  //     type: "POST",
+  //     url: "http://localhost:8080/api/v1/test"
+  //   }).then(function(data) {
 });
 define('client/components/plaid-link', ['exports', 'ember-plaid/components/plaid-link', 'client/config/environment'], function (exports, _emberPlaidComponentsPlaidLink, _clientConfigEnvironment) {
 
@@ -342,6 +358,11 @@ define('client/components/plaid-link', ['exports', 'ember-plaid/components/plaid
     product: plaidConfig.product,
     key: plaidConfig.key,
     env: plaidConfig.env
+  });
+});
+define('client/components/transaction-tile', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
+    actions: {}
   });
 });
 define('client/helpers/is-equal', ['exports', 'ember-bootstrap/helpers/is-equal'], function (exports, _emberBootstrapHelpersIsEqual) {
@@ -598,7 +619,7 @@ define('client/routes/index', ['exports', 'ember'], function (exports, _ember) {
     },
     actions: {
       processPlaidToken: function processPlaidToken(public_token) {
-        $.ajax({
+        _ember['default'].$.ajax({
           url: 'http://localhost:8080/api/v1/authenticate',
           method: 'POST',
           data: {
@@ -626,7 +647,7 @@ define('client/routes/index', ['exports', 'ember'], function (exports, _ember) {
         Object.keys(shops).forEach(function (shop) {
           $("#sortedShops").append('<li>' + shop + '</li>');
           shops[shop].forEach(function (transaction) {
-            $('#sortedShops').append('<li>' + shops[shop] + '</li>');
+            $('#sortedShops').append('<li>' + transaction + '</li>');
           });
         });
       }
@@ -4790,6 +4811,42 @@ define("client/templates/components/form-element/vertical/textarea", ["exports"]
 define("client/templates/components/plaid-call", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "fragmentReason": false,
+            "revision": "Ember@2.6.0",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 63
+              }
+            },
+            "moduleName": "client/templates/components/plaid-call.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("Verify Bank Account");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
       return {
         meta: {
           "fragmentReason": {
@@ -4821,13 +4878,11 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           dom.setAttribute(el1, "id", "target");
           var el2 = dom.createTextNode("\n  ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createComment(" {{#plaid-link action='processPlaidToken'}}Verify Bank Account{{/plaid-link}} ");
+          var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("button");
-          var el3 = dom.createTextNode("Call");
-          dom.appendChild(el2, el3);
+          var el2 = dom.createComment(" <button {{action 'callApi' users}}>Call</button> ");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n\n  ");
           dom.appendChild(el1, el2);
@@ -4837,14 +4892,13 @@ define("client/templates/components/plaid-call", ["exports"], function (exports)
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1, 3]);
           var morphs = new Array(1);
-          morphs[0] = dom.createElementMorph(element0);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           return morphs;
         },
-        statements: [["element", "action", ["callApi", ["get", "users", ["loc", [null, [4, 27], [4, 32]]]]], [], ["loc", [null, [4, 8], [4, 34]]]]],
+        statements: [["block", "plaid-link", [], ["action", "processPlaidToken"], 0, null, ["loc", [null, [3, 2], [3, 78]]]]],
         locals: [],
-        templates: []
+        templates: [child0]
       };
     })();
     var child1 = (function () {
@@ -5058,6 +5112,59 @@ define("client/templates/components/plaid-link", ["exports"], function (exports)
     };
   })());
 });
+define("client/templates/components/transaction-tile", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "fragmentReason": {
+          "name": "triple-curlies"
+        },
+        "revision": "Ember@2.6.0",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 0
+          }
+        },
+        "moduleName": "client/templates/components/transaction-tile.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("li");
+        dom.setAttribute(el1, "class", "transaction-box");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("p");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]), 0, 0);
+        return morphs;
+      },
+      statements: [["content", "model.transaction", ["loc", [null, [2, 5], [2, 26]]]]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
 define("client/templates/index", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     return {
@@ -5151,7 +5258,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("client/app")["default"].create({"name":"client","version":"0.0.0+37d6402b"});
+  require("client/app")["default"].create({"name":"client","version":"0.0.0+238e4338"});
 }
 
 /* jshint ignore:end */
