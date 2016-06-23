@@ -65,6 +65,7 @@ aside h1 {
   color: white;
   text-align: center;
 }
+<<<<<<< HEAD
 
 /***************************************************************************/
 /*//About Styles*/
@@ -111,4 +112,9 @@ aside h1 {
 .click img {
   height: 60px;
   width: 60px;
+=======
+li, h1 {
+  color: white;
+  font-size: 25pt;
+>>>>>>> 238e4338c93a4ad4b7544ccce0621c1dfd3bf4db
 }

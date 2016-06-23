@@ -100,7 +100,7 @@ aside h1 {
   font-family: Helvetica Neue;
   font-weight: lighter;
   color: black;
-  
+
   font-size: 20px;
 }
 .click {
@@ -111,4 +111,8 @@ aside h1 {
 .click img {
   height: 60px;
   width: 60px;
+
+li, h1 {
+  color: white;
+  font-size: 25pt;
 }

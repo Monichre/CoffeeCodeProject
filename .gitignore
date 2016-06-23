@@ -1,2 +1,10 @@
-node_modules
-tmp
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+dist/
+tmp/
+<<<<<<< HEAD
+
+# dependencies
+=======
+>>>>>>> 4b3761f7aba1eed0f7b9fd0e960c623cecde5239
