@@ -60,7 +60,7 @@ export default Ember.Component.extend({
           var newUserShops = newUserCoffee.splice(-3, 3);
           newUser.coffeeShops = newUserCoffee;
           self.set('coffeeShops', newUserShops);
-          self.set('thisUser', user);
+          // self.set('thisUser', user);
           self.sendAction('newUser', newUser);
         }
 
@@ -70,7 +70,7 @@ export default Ember.Component.extend({
           if(!(Object.keys(sortedShops).includes(shop.name))){
             sortedShops[shop.name] = [shop._id];
           } else {
-            sortedShops[shop.name].push(shop._id)
+            sortedShops[shop.name].push(shop._id);
           }
         });
 
@@ -83,7 +83,7 @@ export default Ember.Component.extend({
             self.thisUser.set('coffeeShops', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }
-        })
+        });
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
       });
     self.set('plaidCompleted', false);
