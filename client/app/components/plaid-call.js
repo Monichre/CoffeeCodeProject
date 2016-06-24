@@ -80,7 +80,7 @@ export default Ember.Component.extend({
           } else {
             sortedShops[shop.name].push(shop._id);
           }
-          Ember.$(".coffee-cards").text("<li>" + shop + "TEST </li>");
+          // Ember.$(".coffee-cards").text("<li>" + shop + "TEST </li>");
 
         });
 
