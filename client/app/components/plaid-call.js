@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   plaidCompleted: true,
   coffeeShops: null,
   coffeeChains: null,
-  thisUser: null,
+  thisUser: "",
   freeCoffee: false,
   users: function(){
     return this.store.findAll('user');
@@ -65,7 +65,7 @@ export default Ember.Component.extend({
           //This if block popoulates the lastCoffeeId model property
           newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length-1]._id;
 
-          var newUserShops = newUserCoffee.splice(-(newUserCoffee.length), newUserCoffee.length);
+          var newUserShops = newUserCoffee.splice(-3, 3);
           newUser.coffeeShops = newUserShops;
           self.set('coffeeShops', newUserShops);
           // self.set('thisUser', user);
@@ -89,7 +89,6 @@ export default Ember.Component.extend({
         });
 
           ////DROPDOWN MENU CRAP
-          console.log()
           var shops = Object.keys(sortedShops);
           shops.forEach(function(shop){
 
@@ -97,11 +96,12 @@ export default Ember.Component.extend({
           });
 
         Object.keys(sortedShops).forEach(function(key){
+          console.log(sortedShops);
           if(sortedShops[key].length >= 5){
             self.set('freeCoffee', key);
             sortedShops[key].splice(0, 5);
-            self.thisUser.set("coffeeShops", []);
-            self.thisUser.set('lastCoffeeId', sortedShops[key]);
+            self.set("coffeeShops", []);
+            self.set('lastCoffeeId', sortedShops[key]);
             self.thisUser.set('coffeeShops', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }

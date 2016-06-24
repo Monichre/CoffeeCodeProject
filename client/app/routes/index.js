@@ -24,16 +24,17 @@ export default Ember.Route.extend({
     //  debugger;
      user.save();
    },
-   sortedUser(user){
-     user.save();
-   },
+  //  sortedUser(user){
+  //    user.save();
+  //  },
    displayChains(shops, freeCoffee){
      if(freeCoffee){
        $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
      }
+
      Object.keys(shops).forEach(function(shop){
-       Ember.$("#sortedShops").html();
-       shops[shop].forEach(function(transaction){
+       console.log(shops[shop]);
+      //  shops[shop].forEach(function(transaction){
          console.log(shops[shop].length);
          if (shops[shop].length === 1){
            Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP1.jpg" width="400px"></li>');
@@ -47,7 +48,7 @@ export default Ember.Route.extend({
            Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP4.jpg" width="400px"></li>');
            alert("You get a free coffee at " + shop[shop] + "!");
          }
-       })
+      //  })
        Ember.$("#sortedShops").append('');
      })
    },
