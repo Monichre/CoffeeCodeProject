@@ -122,7 +122,11 @@ a:visited {
 }
 
 .shop-name{
-  font-size: 20px;
+  list-style: none;
+}
+
+.shop-transaction{
+  list-style: none;
 }
 
 #sortedShops{
@@ -131,7 +135,11 @@ a:visited {
 }
 
 .shop-tile{
-  background-color: grey;
+  background-color: rgba(20,20,20,.4);
+  backdrop-filter: blur(5px);
+  margin-left: 15%;
+  margin-right: 15%;
+  border-radius: 4px;
 }
 
 .shop-list{
