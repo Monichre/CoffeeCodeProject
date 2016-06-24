@@ -10,12 +10,15 @@ export default Ember.Component.extend({
     return this.store.findAll('user');
   },
   actions: {
-    callApi(token) {
-      var self = this;
-      Ember.$.ajax({
-        type: "POST",
-        url: "http://localhost:8080/api/v1/test",
-        }).then(function(data) {
+    processPlaidToken(token) {
+     var self = this;
+     Ember.$.ajax({
+       type: "POST",
+       url: "http://localhost:8080/api/v1/authenticate",
+       data: {
+         public_token: token,
+       }}).then(function(data) {
+         console.log(data);
         var users = self.users;
         var noUser = true;
         var coffeeShops = []; // local variable
@@ -60,8 +63,9 @@ export default Ember.Component.extend({
             }
           });
           //This if block popoulates the lastCoffeeId model property
-          newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length - 4]._id;
-          var newUserShops = newUserCoffee.splice(-3, 3);
+          newUser.lastCoffeeId = newUserCoffee[newUserCoffee.length-1]._id;
+
+          var newUserShops = newUserCoffee.splice(-(newUserCoffee.length), newUserCoffee.length);
           newUser.coffeeShops = newUserShops;
           self.set('coffeeShops', newUserShops);
           // self.set('thisUser', user);

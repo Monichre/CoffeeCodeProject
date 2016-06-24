@@ -36,15 +36,15 @@ export default Ember.Route.extend({
        shops[shop].forEach(function(transaction){
          console.log(shops[shop].length);
          if (shops[shop].length === 1){
-           Ember.$('#sortedShops').html('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP1.jpg" width="400px"></li>');
+           Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP1.jpg" width="400px"></li>');
          } else if (shops[shop].length === 2){
-           Ember.$('#sortedShops').html('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP2.jpg" width="400px"></li>');
+           Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP2.jpg" width="400px"></li>');
          } else if (shops[shop].length === 3){
-           Ember.$('#sortedShops').html('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP3.jpg" width="400px"></li>');
+           Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP3.jpg" width="400px"></li>');
          } else if (shops[shop].length === 4){
-           Ember.$('#sortedShops').html('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP4.jpg" width="400px"></li>');
+           Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP4.jpg" width="400px"></li>');
          } else if (shops[shop].length === 5){
-           Ember.$('#sortedShops').html('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP4.jpg" width="400px"></li>');
+           Ember.$('#sortedShops').append('<div class="shop-tile"><li class="shop-name">' + shop + '</li></div><li class="shop-transaction"><img src="../images/CCUP4.jpg" width="400px"></li>');
            alert("You get a free coffee at " + shop[shop] + "!");
          }
        })

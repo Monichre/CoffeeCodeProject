@@ -80,21 +80,22 @@ router.route('/users')
 router.route('/authenticate')
 
   .post(function(request, response){
-    var plaidClient = new plaid.Client('test_client', 'secret', plaid.environments.tartan);
+    var plaidClient = new plaid.Client(client_id, secret, plaid.environments.tartan);
     var public_token = request.body.public_token;
     var foundAccount;
-    console.log(plaidClient);
 
     // Exchange a public_token for a Plaid access_token
     plaidClient.exchangeToken(public_token, function(err, res) {
       if (err != null) {
         // Handle error!
       } else {
+        var access_token = res.access_token
       // This is my Plaid access token -
       //exchange public token for a plaid access token
       plaidClient.getConnectUser(access_token, {
         gte: '30 days ago',
       }, function(err, res) {
+        console.log(err);
         response.json(res.transactions);
       });
       }
