@@ -151,3 +151,4 @@ console.log('Magic happens on port ' + port);
 //Database
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://ellisliam:coffee@ds033865.mlab.com:33865/user_coffee');
+// mongoose.connect('mongodb://ilesikar:tzx34jkas12@ds023054.mlab.com:23054/coffee-cards');
