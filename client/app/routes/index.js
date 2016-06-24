@@ -29,14 +29,15 @@ export default Ember.Route.extend({
    },
    displayChains(shops, freeCoffee){
      if(freeCoffee){
-       $('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
+       Ember.$('#sortedShops').append("<h1>You have a free coffee at " + freeCoffee);
      }
      Object.keys(shops).forEach(function(shop){
-       Ember.$("#sortedShops").append('<li>'+shop+'</li>');
+       Ember.$("#sortedShops").append('<li>' + shop + '</li>');
        shops[shop].forEach(function(transaction){
-         Ember.$('#sortedShops').append('<li>'+ transaction + '</li>');
-       })
-     })
+         Ember.$('#sortedShops').append('<li>' + transaction + '</li>');
+       });
+     });
    },
+
   }
 });

@@ -71,8 +71,8 @@ export default Ember.Component.extend({
 
         var sortedShops = {};
 
-              // $("#target").text("<li>" sortedShops[0] "</li>");
-              // $("#target").text("<li>" sortedShops[shop.name] "</li>")
+          // Ember.$(".coffee-cards").text("<li>" + sortedShops[0] + "</li>");
+          // Ember.$(".coffee-cards").text("<li>" + sortedShops[shop.name] + "</li>")
 
         self.coffeeShops.forEach(function(shop){
           if(!(Object.keys(sortedShops).includes(shop.name))){
@@ -80,15 +80,16 @@ export default Ember.Component.extend({
           } else {
             sortedShops[shop.name].push(shop._id);
           }
+          Ember.$(".coffee-cards").text("<li>" + shop + "TEST </li>");
 
         });
 
-          ////DROPDOWN MENU CRAP
-          var shops = Object.keys(sortedShops);
-          shops.forEach(function(shop){
-            $("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " +  + "</a></li>");
-          });
-          /////////////
+        ////DROPDOWN MENU CRAP
+        var shops = Object.keys(sortedShops);
+        shops.forEach(function(shop){
+          Ember.$("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " + "</a></li>");
+        });
+        /////////////
 
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
@@ -99,9 +100,13 @@ export default Ember.Component.extend({
             self.thisUser.set('coffeeShops', sortedShops);
             self.sendAction('sortedUser', self.thisUser);
           }
-        })
+        });
         self.sendAction('coffeeChains', sortedShops, self.freeCoffee);
         self.set('plaidCompleted', false);
+
+        shops.forEach(function(shop){
+          Ember.$(".coffee-cards").append("TEST");
+        })
       });
     }
   }
