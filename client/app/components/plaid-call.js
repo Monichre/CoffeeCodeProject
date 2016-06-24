@@ -88,6 +88,7 @@ export default Ember.Component.extend({
           console.log()
           var shops = Object.keys(sortedShops);
           shops.forEach(function(shop){
+
             Ember.$("#dropdown").append("<li class='droplist'><a href=''>" + shop + "  (" + sortedShops[shop].length + ")</a></li>");
           });
 

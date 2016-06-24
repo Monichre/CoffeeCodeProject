@@ -80,7 +80,7 @@ router.route('/users')
 router.route('/authenticate')
 
   .post(function(request, response){
-    var plaidClient = new plaid.Client(client_id, secret, plaid.environments.tartan);
+    var plaidClient = new plaid.Client('test_client', 'secret', plaid.environments.tartan);
     var public_token = request.body.public_token;
     var foundAccount;
     console.log(plaidClient);
