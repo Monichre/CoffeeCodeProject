@@ -84,12 +84,12 @@ export default Ember.Component.extend({
 
         });
 
-        ////DROPDOWN MENU CRAP
-        var shops = Object.keys(sortedShops);
-        shops.forEach(function(shop){
-          Ember.$("#dropdown").append("<li class='droplist'><a href=''>" + shop + " " + "</a></li>");
-        });
-        /////////////
+          ////DROPDOWN MENU CRAP
+          console.log()
+          var shops = Object.keys(sortedShops);
+          shops.forEach(function(shop){
+            Ember.$("#dropdown").append("<li class='droplist'><a href=''>" + shop + "  (" + sortedShops[shop].length + ")</a></li>");
+          });
 
         Object.keys(sortedShops).forEach(function(key){
           if(sortedShops[key].length >= 5){
